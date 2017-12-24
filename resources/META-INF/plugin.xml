@@ -1,0 +1,47 @@
+<idea-plugin>
+    <id>com.atomdu.plugin</id>
+    <name>1024 Tools</name>
+    <version>1.0.3</version>
+    <vendor email="260603323@qq.com" url="http://www.atomdu.com">atomdu</vendor>
+
+    <description><![CDATA[
+      这是汇集全网优质网址及资源的编程导航工具，主要面向中国用户。<br>
+      <em>This is a programming navigation tool that brings together the quality website and resources of the whole network, mainly for Chinese users.</em><br><br>
+
+      及时收录编程、算法、工具、学习等分类的网址导航和内容,让您的编程更简单。<br>
+      <em>Make your programming easier by including the web site navigation and content of programming, algorithms, tools, learning, etc.</em><br>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        加入了把英文代码翻译成中文代码的工具。<br>
+        <em>Join the tool that translates English code into Chinese code.</em>
+    ]]>
+    </change-notes>
+
+    <!--适配PhpStrom等如果不添加，这个插件只能在Intelij和AndroidStudio中使用-->
+    <!-- 关于如何针对不同的产品请看 http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html-->
+    <depends>com.intellij.modules.lang</depends>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="105.0"/>
+
+    <!--注册Application-->
+    <application-components>
+        <!-- Add your application components here -->
+        <component>
+            <implementation-class>atomdu.intellij.plugin.Application</implementation-class>
+        </component>
+    </application-components>
+
+    <actions>
+    </actions>
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+                id="1024 Tools"
+                anchor="right"
+                canCloseContents="true"
+                factoryClass="atomdu.intellij.plugin.PanelWindow"/>
+    </extensions>
+
+    <!--<fileTypeFactory implementation="com.atomdu.idea.language.timp01.SimpleFileTypeFactory"/>-->
+</idea-plugin>
