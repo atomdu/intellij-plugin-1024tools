@@ -10,21 +10,14 @@ import atomdu.tools.core.http.parse.JsonNavigationParser;
  * Created by atomdu on 2017/12/13.
  */
 public class ApiHelper {
-    private static String MAIN = ConfigManager.getURL("/main.json");
-
-    public static AsyncHttpClient getCoreApi(OnObjectCallback<RootBean> onCallback) {
-        return new AsyncHttpClient.Builder().url(MAIN).get().parser(new JsonRootBeanParser()).onObjectCallback(onCallback).build();
-    }
-
     /**
-     * 获取导航数据
+     * 获取入口文件
      *
-     * @param url
      * @param onCallback
      * @return
      */
-    public static AsyncHttpClient getRoot(String url, OnObjectCallback<Navigation> onCallback) {
-        return new AsyncHttpClient.Builder().url(url).parser(new JsonNavigationParser()).onObjectCallback(onCallback).build();
+    public static AsyncHttpClient getCoreApi(OnObjectCallback<RootBean> onCallback) {
+        return new AsyncHttpClient.Builder().url(ConfigManager.getMainURL()).get().parser(new JsonRootBeanParser()).onObjectCallback(onCallback).build();
     }
 
     /**

@@ -10,7 +10,7 @@ public class Config {
     //英文应用名称
     public static final String APP_NAME_EN = "1024 Tools";
     //是否debug模式
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;//TODO debug
     //主机地址
     public static String HOST = "http://www.atomdu.com";
     //中文主机地址
@@ -19,6 +19,14 @@ public class Config {
     public static final String HOST_EN = "http://www.atomdu.com/plugin";
     //debug主机地址
     public static final String HOST_DEBUG = "http://localhost/atomdu.github.io/plugin";
+    //中文入口文件
+    public static final String MAIN_PATH = "/main_zh.json";
+    //中文入口文件
+    public static final String MAIN_ZH_PATH = "/main_zh.json";
+    //英文入口文件
+    public static final String MAIN_EN_PATH = "/main_en.json";
     //帮助页面
-    public static final String HTTP_HELP = "http://github.com/atomdu";
+    public static final String HELP_URL = HOST + "/help.html";
+
+
 }

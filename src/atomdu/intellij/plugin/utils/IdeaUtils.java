@@ -2,8 +2,11 @@ package atomdu.intellij.plugin.utils;
 
 import atomdu.intellij.plugin.Application;
 import atomdu.tools.core.notify.NotifyFactory;
+import com.intellij.codeInsight.hint.HintManager;
+import com.intellij.codeInsight.hint.HintManagerImpl;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.lang.PsiStructureViewFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -15,6 +18,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.EditorFactoryImpl;
+import com.intellij.openapi.editor.impl.EditorImpl;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
@@ -31,6 +35,9 @@ import java.util.Map;
  * Created by Administrator on 2017/7/24.
  */
 public class IdeaUtils {
+    public static void showErrorHint(Editor editor){
+        HintManager.getInstance().showErrorHint(editor,"showErrorHint");
+    }
     /**
      * 读文件
      *
@@ -63,7 +70,8 @@ public class IdeaUtils {
         }
         Document document = EditorFactory.getInstance().createDocument(content);
         Project project = getProject();
-        return createEditor(content, project, fileType, false);
+        Editor editor = createEditor(content, project, fileType, false);
+        return editor;
     }
 
     /**
@@ -134,6 +142,7 @@ public class IdeaUtils {
                 }
             }
         }
+//        showErrorHint(showEditor);
         return showEditor;
     }
 
@@ -181,7 +190,7 @@ public class IdeaUtils {
     public static String getDocumentText(Editor editor) {
         //获取编辑器全部内容
         Document document = editor == null ? null : editor.getDocument();
-        String from = document == null ? "请打开一个文本编辑窗口在试" : document.getText();
+        String from = document == null ? "请打开一个文本编辑窗口在试" : document.getText();//（使用词库，不上传代码）
         return from;
     }
 

@@ -30,15 +30,10 @@ public class PanelWindow implements ToolWindowFactory, RootPanel.RootPanelListen
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(window, "", true);
         toolWindow.getContentManager().addContent(content);
-//        toolWindow.setTitle(ConfigManager.getAppName());//小标题
-//        toolWindow.setStripeTitle(ConfigManager.getAppName());
     }
 
     @Override
     public void onChanged(RootBean rootBean) {
-//        if (rootBean != null && rootBean.getName() != null && rootBean.getName().length() > 0) {
-//            toolWindow.setStripeTitle(rootBean.getName());
-//        }
     }
 
     @Override

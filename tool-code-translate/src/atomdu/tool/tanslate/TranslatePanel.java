@@ -7,11 +7,14 @@ import atomdu.tool.tanslate.api.ApiClientFactory;
 import atomdu.tool.tanslate.config.ToStyle;
 import atomdu.tool.tanslate.dao.LocalDOM;
 import atomdu.tools.core.http.OnStringCallback;
+import atomdu.tools.core.utils.SystemUtils;
 import com.siyeh.ig.ui.*;
 import com.siyeh.ig.ui.TextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.HttpURLConnection;
 import java.util.*;
 import java.util.List;
@@ -59,10 +62,29 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
         JPanel toolbar = new JPanel();
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
         add(toolbar, BorderLayout.NORTH);
+        initPayUI(toolbar);
         initToolbarApiClientTypeUI(toolbar);
         initTollbarToStyleUI(toolbar);
         initTollbarKeywordUI(toolbar);
         initToolbarClickUI(toolbar);
+
+    }
+
+    /**
+     * 帮助页面
+     * @param toolbar
+     */
+    protected void initPayUI(JPanel toolbar) {
+        JLabel h = new JLabel(Help.getHelpName());
+        h.setForeground(Color.decode("#dea87a"));
+        h.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //TODO 帮助页面
+                SystemUtils.openDefaultBrowser(Help.getHelpUrl());
+            }
+        });
+        toolbar.add(h);
     }
 
     /**
@@ -188,7 +210,6 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
             @Override
             public void onStart(HttpURLConnection httpURLConnection) {
                 super.onStart(httpURLConnection);
-
                 TranslatePanel.this.onStart(this);
             }
 

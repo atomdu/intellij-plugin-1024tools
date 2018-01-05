@@ -14,14 +14,29 @@ public final class ConfigManager extends Config {
      */
     public static final String getHost() {
         if (Config.DEBUG) {
-            return HOST = HOST_DEBUG;
+            HOST = HOST_DEBUG;
         } else {
             //根据语言环境返回服务器地址
             if (SystemUtils.isLocaleSystemLanguageZH()) {
-                return HOST_ZH;
+                HOST = HOST_ZH;
             } else {
-                return HOST_EN;
+                HOST = HOST_EN;
             }
+        }
+        return HOST;
+    }
+
+    /**
+     * 获取入口url
+     *
+     * @return
+     */
+    public static String getMainURL() {
+        //根据语言环境返回服务器地址
+        if (SystemUtils.isLocaleSystemLanguageZH()) {
+            return getHost() + MAIN_ZH_PATH;
+        } else {
+            return getHost() + MAIN_EN_PATH;
         }
     }
 

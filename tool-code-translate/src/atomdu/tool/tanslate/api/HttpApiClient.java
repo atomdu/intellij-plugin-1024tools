@@ -26,9 +26,14 @@ import java.util.Map;
  * Created by atomdu on 2017/12/5.
  */
 public class HttpApiClient implements ApiClient {
-    public static final String EDITOR = "http://localhost/translate-service-tp5/public/translate/code/api";
+    public static final String EDITOR = ConfigManager.getURL("/translate-service-tp5/public/translate/code/api");
     public static final String WORDS = ConfigManager.getURL("/modules/translate/word.properties");
 
+    /**
+     * 获取单词数据
+     * @param onStringCallback
+     * @return
+     */
     public AsyncHttpClient getLocalWord(OnStringCallback onStringCallback) {
         return new AsyncHttpClient.Builder().url(WORDS).get().onStringCallback(onStringCallback).build();
     }

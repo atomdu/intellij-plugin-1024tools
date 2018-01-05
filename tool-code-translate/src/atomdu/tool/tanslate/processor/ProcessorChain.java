@@ -24,8 +24,8 @@ public class ProcessorChain {
         wordProcessor = new WordProcessor();
         keywordProcessor = new KeywordProcessor();
     }
-
-    public synchronized String onProcessor(String str) {//TODO 当前格式写死了，需要写活，明天数据下载到本地，测试速度
+    
+    public synchronized String onProcessor(String str) {
         StringBuffer sb = new StringBuffer();
         List<Data> list = symbolProcessor.onProcessor(str);
         for (Data d1 : list) {
