@@ -20,7 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * 浏览器面板？
+ * 浏览器面板
  * TODO 用try...catch 包裹住浏览器异常退出的部分试一试还会不会退出
  * Created by atomdu on 2017/11/23.
  */

@@ -10,7 +10,7 @@ public class LocalApiClient implements ApiClient {
     @Override
     public void doRequest(String from, String fromType, String fileType, String toStyle, String toType, OnStringCallback onCallback) {
         onCallback.onStart(null);
-        ProcessorChain chain = new ProcessorChain();
+        ProcessorChain chain = new ProcessorChain(fileType);
         chain.setToStyle(toStyle);
         String result = chain.onProcessor(from);
         if (onCallback != null)

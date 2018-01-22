@@ -1,12 +1,10 @@
 package atomdu.intellij.plugin.utils;
 
-import atomdu.intellij.plugin.Application;
+import atomdu.intellij.plugin.TranslateEditorComponentImpl;
 import atomdu.tools.core.notify.NotifyFactory;
 import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.codeInsight.hint.HintManagerImpl;
 import com.intellij.ide.DataManager;
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.lang.PsiStructureViewFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -17,6 +15,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.editor.impl.EditorComponentImpl;
 import com.intellij.openapi.editor.impl.EditorFactoryImpl;
 import com.intellij.openapi.editor.impl.EditorImpl;
 import com.intellij.openapi.fileTypes.FileType;
@@ -26,6 +25,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import javafx.application.Platform;
 
 import javax.swing.*;
+import java.awt.*;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -35,9 +36,10 @@ import java.util.Map;
  * Created by Administrator on 2017/7/24.
  */
 public class IdeaUtils {
-    public static void showErrorHint(Editor editor){
-        HintManager.getInstance().showErrorHint(editor,"showErrorHint");
+    public static void showErrorHint(Editor editor) {
+        HintManager.getInstance().showErrorHint(editor, "showErrorHint");
     }
+
     /**
      * 读文件
      *
@@ -89,10 +91,43 @@ public class IdeaUtils {
             return null;
         }
         Document document = EditorFactory.getInstance().createDocument(content);
-        if (fileType != null)
-            return EditorFactory.getInstance().createEditor(document, project, fileType, v);
-        else
-            return EditorFactory.getInstance().createEditor(document);
+        EditorImpl editor = null;
+        if (fileType != null) {
+            editor = (EditorImpl) EditorFactory.getInstance().createEditor(document, project, fileType, v);
+        } else {
+            editor = (EditorImpl) EditorFactory.getInstance().createEditor(document);
+        }
+        return editor;
+    }
+
+    /**
+     * 注入
+     */
+    public static void injectEditor(EditorImpl editor,String result){
+        Class clazz = editor.getClass();
+        try {
+            Field field = clazz.getDeclaredField("myScrollPane");
+            field.setAccessible(true);
+            JScrollPane sp = (JScrollPane) field.get(editor);
+
+            Field field2 = clazz.getDeclaredField("myEditorComponent");
+            field2.setAccessible(true);
+            EditorComponentImpl sp2 = (EditorComponentImpl) field2.get(editor);
+
+            TranslateEditorComponentImpl editorComponent = new TranslateEditorComponentImpl(editor);
+            editorComponent.setText(result);
+
+            JPanel jPanel = new JPanel();
+            jPanel.setLayout(new BorderLayout());
+            jPanel.add(sp2,BorderLayout.CENTER);
+            jPanel.add(editorComponent,BorderLayout.EAST);
+            sp.setViewportView(jPanel);
+
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

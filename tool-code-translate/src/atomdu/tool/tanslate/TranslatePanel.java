@@ -67,6 +67,7 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
         initTollbarToStyleUI(toolbar);
         initTollbarKeywordUI(toolbar);
         initToolbarClickUI(toolbar);
+        initStatisticsUI(toolbar);
 
     }
 
@@ -129,6 +130,14 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
      */
     protected void initToolbarClickUI(JPanel toolbar) {
 
+
+    }
+    /**
+     * 统计
+     *
+     * @param jPanel
+     */
+    protected void initStatisticsUI(JPanel jPanel) {
 
     }
 

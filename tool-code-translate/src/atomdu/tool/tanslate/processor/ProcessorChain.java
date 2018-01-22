@@ -19,10 +19,10 @@ public class ProcessorChain {
 
     private String toStyle = ToStyle.LINE;
 
-    public ProcessorChain() {
+    public ProcessorChain(String fileType) {
         symbolProcessor = new SymbolProcessor();
         wordProcessor = new WordProcessor();
-        keywordProcessor = new KeywordProcessor();
+        keywordProcessor = new KeywordProcessor(fileType);
     }
     
     public synchronized String onProcessor(String str) {

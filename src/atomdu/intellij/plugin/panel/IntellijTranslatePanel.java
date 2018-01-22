@@ -2,6 +2,7 @@ package atomdu.intellij.plugin.panel;
 
 import atomdu.intellij.plugin.utils.IdeaUtils;
 import atomdu.tool.tanslate.TranslatePanel;
+import atomdu.tool.tanslate.dao.LocalDOM;
 import atomdu.tools.core.http.OnStringCallback;
 import atomdu.tools.core.notify.NotifyFactory;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -20,6 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by atomdu on 2017/12/4.
@@ -65,13 +68,29 @@ public class IntellijTranslatePanel extends TranslatePanel {
     }
 
     @Override
+    protected void initStatisticsUI(JPanel jPanel) {
+        JButton all = new JButton("全部统计");
+        all.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String str = LocalDOM.getInstance().getCurrentStatistics();
+                transEditor = IdeaUtils.createEditor(str, null);
+                transPanel = transEditor.getComponent();
+                setContentPanel(transPanel);
+            }
+        });
+        jPanel.add(all);
+    }
+
+    @Override
     public String getFrom() {
         return documentText;
     }
 
     @Override
     public String getFileType() {
-        return "";
+        String str = (fileType == null) ? "" : fileType.getDefaultExtension();
+        return str;
     }
 
     private void translate() {
@@ -109,6 +128,9 @@ public class IntellijTranslatePanel extends TranslatePanel {
                 transEditor = IdeaUtils.createEditor(result, fileType);
                 transPanel = transEditor.getComponent();
                 setContentPanel(transPanel);
+
+//                Editor editor =  IdeaUtils.getCurrentEditor();
+//                IdeaUtils.injectEditor((EditorImpl) editor,result);
             }
         });
     }
