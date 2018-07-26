@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jfx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/tool-browser/libs/jfxrt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/tool-browser/libs/jfxswt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

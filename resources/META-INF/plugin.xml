@@ -39,6 +39,7 @@
     <actions>
     </actions>
     <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="atomdu.intellij.language.AtomduFileTypeFactory"/>
         <toolWindow
                 id="1024 Tools"
                 anchor="right"
@@ -46,5 +47,5 @@
                 factoryClass="atomdu.intellij.plugin.PanelWindow"/>
     </extensions>
 
-    <!--<fileTypeFactory implementation="com.atomdu.idea.language.timp01.SimpleFileTypeFactory"/>-->
+    <!--<fileTypeFactory implementation="com.atomdu.idea.language.timAtomduFileTypeFactorytory"/>-->
 </idea-plugin>

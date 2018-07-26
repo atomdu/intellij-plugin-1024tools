@@ -3,6 +3,7 @@ package atomdu.tool.tanslate.api;
 import atomdu.tool.tanslate.dao.LocalDOM;
 import atomdu.tools.core.config.ConfigManager;
 import atomdu.tools.core.http.AsyncHttpClient;
+import atomdu.tools.core.http.OnFileCallback;
 import atomdu.tools.core.http.OnStringCallback;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -36,6 +37,15 @@ public class HttpApiClient implements ApiClient {
      */
     public AsyncHttpClient getLocalWord(OnStringCallback onStringCallback) {
         return new AsyncHttpClient.Builder().url(WORDS).get().onStringCallback(onStringCallback).build();
+    }
+
+    /**
+     * 获取单词数据
+     * @param onFileCallback
+     * @return
+     */
+    public AsyncHttpClient getLocalWord(OnFileCallback onFileCallback) {
+        return new AsyncHttpClient.Builder().url(WORDS).get().onFileCallback(onFileCallback).build();
     }
 
     /**

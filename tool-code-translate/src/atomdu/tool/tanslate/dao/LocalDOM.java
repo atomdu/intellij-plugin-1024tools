@@ -1,20 +1,8 @@
 package atomdu.tool.tanslate.dao;
 
 import atomdu.tools.core.config.Config;
-import atomdu.tools.core.utils.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * 本地数据
@@ -79,10 +67,21 @@ public class LocalDOM {
      * 统计
      */
     public String getCurrentStatistics() {
+        //排序
+        Set<String> set = currentCounts.keySet();
+        String[] words = set.toArray(new String[]{});
+        Arrays.sort(words, 0, words.length - 1, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return currentCounts.get(o2) - currentCounts.get(o1);
+            }
+        });
+        //输出格式
         StringBuilder sb = new StringBuilder();
-        for (String key : currentCounts.keySet()) {
+        for (String key : words) {
             int value = currentCounts.get(key);
-            sb.append(key + "=" + value+"\n");//TODO 换行符系统适配
+            sb.append(key + "=" + value + "\n");//TODO 换行符系统适配
+            //sb.append(key + "\n");//TODO 换行符系统适配
         }
         return sb.toString();
     }

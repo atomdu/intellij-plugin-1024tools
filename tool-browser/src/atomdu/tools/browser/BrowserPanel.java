@@ -5,11 +5,11 @@ import java.awt.*;
 /**
  * Created by atomdu on 2017/12/4.
  */
-public class BrowserPanel extends BrowserBodyPanel implements BrowserInputToolbar.ToolbarListener {
+public class BrowserPanel extends BrowserBodyHtmlPanel implements BrowserInputToolbar.ToolbarListener {
     private BrowserInputToolbar toolbar;
 
     public BrowserPanel() {
-        toolbar = new BrowserInputToolbar();
+        toolbar = new BrowserInputToolbar(BrowserInputToolbar.URL_TYPE_HTML);
         toolbar.setListener(this);
         add(toolbar, BorderLayout.NORTH);
     }

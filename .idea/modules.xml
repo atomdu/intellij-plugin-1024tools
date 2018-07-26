@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/intellij-plugin-client.iml" filepath="$PROJECT_DIR$/intellij-plugin-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tool-browser/tool-browser.iml" filepath="$PROJECT_DIR$/tool-browser/tool-browser.iml" />
       <module fileurl="file://$PROJECT_DIR$/tool-code-translate/tool-code-translate.iml" filepath="$PROJECT_DIR$/tool-code-translate/tool-code-translate.iml" />
       <module fileurl="file://$PROJECT_DIR$/tools-core/tools-core.iml" filepath="$PROJECT_DIR$/tools-core/tools-core.iml" />
     </modules>

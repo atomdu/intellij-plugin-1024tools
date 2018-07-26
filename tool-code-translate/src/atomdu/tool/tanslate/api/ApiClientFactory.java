@@ -1,9 +1,5 @@
 package atomdu.tool.tanslate.api;
 
-import atomdu.tool.tanslate.sqlite.SQLiteUtils;
-
-import java.sql.SQLException;
-
 /**
  * Created by atomdu on 2017/12/5.
  */

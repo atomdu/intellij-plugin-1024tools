@@ -1,6 +1,7 @@
 package atomdu.intellij.plugin.utils;
 
 import atomdu.intellij.plugin.TranslateEditorComponentImpl;
+import atomdu.tools.core.log.Log;
 import atomdu.tools.core.notify.NotifyFactory;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.ide.DataManager;
@@ -18,11 +19,18 @@ import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.EditorComponentImpl;
 import com.intellij.openapi.editor.impl.EditorFactoryImpl;
 import com.intellij.openapi.editor.impl.EditorImpl;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.FileEditorManagerAdapter;
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.messages.MessageBus;
+import com.intellij.util.messages.MessageBusConnection;
 import javafx.application.Platform;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +44,20 @@ import java.util.Map;
  * Created by Administrator on 2017/7/24.
  */
 public class IdeaUtils {
+
+    /**
+     * 监听Editor文件打开关闭
+     * <p>
+     * FileEditorManagerListener or FileEditorManagerAdapter
+     */
+    public static void addFileEditorManagerListener(FileEditorManagerListener fileEditorManagerListener) {
+        //MessageBus messageBus = getProject().getMessageBus();
+        MessageBus messageBus = ApplicationManager.getApplication().getMessageBus();
+        MessageBusConnection connection = messageBus.connect();
+        connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, fileEditorManagerListener);
+    }
+
+
     public static void showErrorHint(Editor editor) {
         HintManager.getInstance().showErrorHint(editor, "showErrorHint");
     }
@@ -103,7 +125,7 @@ public class IdeaUtils {
     /**
      * 注入
      */
-    public static void injectEditor(EditorImpl editor,String result){
+    public static void injectEditor(EditorImpl editor, String result) {
         Class clazz = editor.getClass();
         try {
             Field field = clazz.getDeclaredField("myScrollPane");
@@ -119,8 +141,8 @@ public class IdeaUtils {
 
             JPanel jPanel = new JPanel();
             jPanel.setLayout(new BorderLayout());
-            jPanel.add(sp2,BorderLayout.CENTER);
-            jPanel.add(editorComponent,BorderLayout.EAST);
+            jPanel.add(sp2, BorderLayout.CENTER);
+            jPanel.add(editorComponent, BorderLayout.EAST);
             sp.setViewportView(jPanel);
 
         } catch (NoSuchFieldException e) {

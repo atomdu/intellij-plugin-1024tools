@@ -439,7 +439,7 @@ public class HttpRequest {
    * </p>
    *
    * @author Robert Harder
-   * @author rob@iharder.sqlite
+   * @author rob@iharder.utils
    * @version 2.3.7
    */
   public static class Base64 {

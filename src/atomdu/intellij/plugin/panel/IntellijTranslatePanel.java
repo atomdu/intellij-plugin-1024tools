@@ -1,5 +1,6 @@
 package atomdu.intellij.plugin.panel;
 
+import atomdu.intellij.plugin.AtomduApplication;
 import atomdu.intellij.plugin.utils.IdeaUtils;
 import atomdu.tool.tanslate.TranslatePanel;
 import atomdu.tool.tanslate.dao.LocalDOM;
@@ -14,8 +15,13 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.EditorImpl;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +33,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by atomdu on 2017/12/4.
  */
-public class IntellijTranslatePanel extends TranslatePanel {
+public class IntellijTranslatePanel extends TranslatePanel implements FileEditorManagerListener {
     private Editor transEditor;
     private Document document;
     private JComponent transPanel;
@@ -39,20 +45,8 @@ public class IntellijTranslatePanel extends TranslatePanel {
     private Project project;
 
     public IntellijTranslatePanel() {
-//        造成PhpStorm的编辑窗口无法输入数据
-//        ActionManager.getInstance().addAnActionListener(new AnActionListener() {
-//            @Override
-//            public void beforeActionPerformed(AnAction anAction, DataContext dataContext, AnActionEvent anActionEvent) {
-//                System.out.println(anAction.getClass().getName());
-//                if (!isShowing() && false) {
-//                    return;
-//                }
-//                if (anAction instanceof EditorAction) {
-//                    doTranslate(anActionEvent);
-//                }
-//            }
-//        });
-
+        AtomduApplication.getInstance().addFileEditorManagerListenerList(this);
+        translate();
     }
 
     @Override
@@ -128,9 +122,6 @@ public class IntellijTranslatePanel extends TranslatePanel {
                 transEditor = IdeaUtils.createEditor(result, fileType);
                 transPanel = transEditor.getComponent();
                 setContentPanel(transPanel);
-
-//                Editor editor =  IdeaUtils.getCurrentEditor();
-//                IdeaUtils.injectEditor((EditorImpl) editor,result);
             }
         });
     }
@@ -138,5 +129,23 @@ public class IntellijTranslatePanel extends TranslatePanel {
     @Override
     public void onFail(OnStringCallback onCallback, Exception e, int code, String msg) {
         NotifyFactory.getInstance().getNotify().error("请求失败，请稍后重试");
+    }
+
+    @Override
+    public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
+
+    }
+
+    @Override
+    public void fileClosed(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
+
+    }
+
+    @Override
+    public void selectionChanged(@NotNull FileEditorManagerEvent event) {
+        if (!isShowing() || !autoTranslateCB.isSelected()) return;
+
+        EditorImpl editor = (EditorImpl) event.getManager().getSelectedTextEditor();
+        translate(editor);
     }
 }

@@ -6,6 +6,7 @@ import atomdu.tool.tanslate.config.KeywordConfig;
 import atomdu.tool.tanslate.api.ApiClientFactory;
 import atomdu.tool.tanslate.config.ToStyle;
 import atomdu.tool.tanslate.dao.LocalDOM;
+import atomdu.tools.core.http.OnFileCallback;
 import atomdu.tools.core.http.OnStringCallback;
 import atomdu.tools.core.utils.SystemUtils;
 import com.siyeh.ig.ui.*;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.util.*;
 import java.util.List;
@@ -23,15 +25,17 @@ import java.util.List;
  * Created by atomdu on 2017/12/2.
  */
 public abstract class TranslatePanel extends JPanel implements TranslateView, TranslatePresenter {
-    private TranslatePresenter translatePresenter;
+    protected TranslatePresenter translatePresenter;
 
-    private JComboBox apiClientTypeCB;
-    private JComboBox toTypeCB;
-    private JComboBox keywordCB;
+    protected JComboBox apiClientTypeCB;
+    protected JComboBox toTypeCB;
+    protected JComboBox keywordCB;
+    protected JCheckBox autoTranslateCB;
+    protected JCheckBox autoStatisticsCB;
 
-    private JPanel contentRootPanel;
+    protected JPanel contentRootPanel;
 
-    private boolean isInitWords;
+    protected boolean isInitWords;
 
     public TranslatePanel() {
         setLayout(new BorderLayout());
@@ -41,6 +45,29 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
         initContentRootPanel();
         //控制器
         translatePresenter = new TranslatePresenterImp(this);
+
+        //initWordsWork();
+    }
+
+    //初始化词库
+    protected void initWordsWork() {
+        HttpApiClient httpApiClient = new HttpApiClient();
+        httpApiClient.getLocalWord(new OnFileCallback(new File("d://test.txt", "utf-8")) {
+            @Override
+            public void onSuccess(int statusCode, Map<String, List<String>> headers, File file) {
+                isInitWords = true;
+            }
+
+            @Override
+            public void onFailure(int statusCode, Map<String, List<String>> headers, File file) {
+                isInitWords = false;
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                isInitWords = false;
+            }
+        }).execute();
     }
 
     private void initContentRootPanel() {
@@ -62,19 +89,37 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
         JPanel toolbar = new JPanel();
         toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
         add(toolbar, BorderLayout.NORTH);
-        initPayUI(toolbar);
+        initAutoTranslate(toolbar);
+//        initPayUI(toolbar);
         initToolbarApiClientTypeUI(toolbar);
         initTollbarToStyleUI(toolbar);
         initTollbarKeywordUI(toolbar);
         initToolbarClickUI(toolbar);
+        initAutoStatisticsUI(toolbar);
         initStatisticsUI(toolbar);
+        initStatisticsOutUI(toolbar);
 
     }
 
-    /**
-     * 帮助页面
-     * @param toolbar
-     */
+    //自动翻译
+    protected void initAutoTranslate(JPanel toolbar) {
+        autoTranslateCB = new JCheckBox("自动翻译", true);
+        toolbar.add(autoTranslateCB);
+    }
+
+    //自动统计
+    protected void initAutoStatisticsUI(JPanel toolbar) {
+        autoStatisticsCB = new JCheckBox("自动统计", true);
+        toolbar.add(autoStatisticsCB);
+    }
+
+    //统计导出
+    protected void initStatisticsOutUI(JPanel toolbar) {
+        toolbar.add(new JLabel("统计导出"));
+    }
+
+
+    //帮助页面
     protected void initPayUI(JPanel toolbar) {
         JLabel h = new JLabel(Help.getHelpName());
         h.setForeground(Color.decode("#dea87a"));
@@ -88,11 +133,7 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
         toolbar.add(h);
     }
 
-    /**
-     * api服务类型，网络还是本地
-     *
-     * @param jPanel
-     */
+    //api服务类型，网络还是本地
     protected void initToolbarApiClientTypeUI(JPanel jPanel) {
         apiClientTypeCB = new JComboBox(ApiClientFactory.API_CLIENT_TYPES);
         apiClientTypeCB.setSelectedIndex(0);
@@ -132,6 +173,7 @@ public abstract class TranslatePanel extends JPanel implements TranslateView, Tr
 
 
     }
+
     /**
      * 统计
      *

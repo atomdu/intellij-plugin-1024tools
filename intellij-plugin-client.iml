@@ -12,5 +12,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tools-core" />
     <orderEntry type="module" module-name="tool-code-translate" />
+    <orderEntry type="module" module-name="tool-browser" />
   </component>
 </module>

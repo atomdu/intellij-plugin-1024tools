@@ -10,6 +10,9 @@ import java.util.Map;
  * Created by atomdu on 2017/11/27.
  */
 public class BrowserInputToolbar extends JPanel {
+    public static String URL_TYPE_HTML = "html";
+    public static String URL_TYPE_JSON = "json";
+
     private Checkbox autoInputCheckbox;//自动输入
     private JTextField inputTextField;//输入框
     private JButton inputButton;//输入确定按钮
@@ -21,7 +24,7 @@ public class BrowserInputToolbar extends JPanel {
     private String currentUrl;
     private String searchText;
 
-    public BrowserInputToolbar() {
+    public BrowserInputToolbar(String urlType) {
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
@@ -60,12 +63,17 @@ public class BrowserInputToolbar extends JPanel {
         autoSearchCheckbox = new Checkbox("自动搜索", true);
         hostPanel.add(autoSearchCheckbox);
         map = new LinkedHashMap<>();
-        map.put("百度", "https://www.baidu.com/s?ie=utf-8&wd=");
-        map.put("Github", "https://github.com/search?utf8=✓&q=");
-        map.put("StackOverFlow", "https://stackoverflow.com/search?q=");
-        map.put("辞海翻译", "http://dict.cn/");
-        map.put("Atomdu", "http://atomdu.com");
-
+        if (urlType.equals(URL_TYPE_HTML)) {
+            map.put("百度", "https://www.baidu.com/s?ie=utf-8&wd=");
+            map.put("Github", "https://github.com/search?utf8=✓&q=");
+            map.put("StackOverFlow", "https://stackoverflow.com/search?q=");
+            map.put("辞海翻译", "http://dict.cn/");
+        }else if (urlType.equals(URL_TYPE_JSON)){
+            map.put("百度", "http://www.baidu.com/s?pn=0&rn=50&tn=json&wd=");
+//            map.put("Github", "https://github.com/search?utf8=✓&q=");
+//            map.put("StackOverFlow", "https://stackoverflow.com/search?q=");
+//            map.put("辞海翻译", "http://dict.cn/");
+        }
         for (String name : map.keySet()) {
             JLabel jLabel = new JLabel(name);
             jLabel.addMouseListener(new SearchAdapter(jLabel));
